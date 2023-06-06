@@ -1,0 +1,8 @@
+jupyterlab-language-pack-zh-CN==3.6.post0
+jupyterlab-language-pack-zh-TW==3.6.post0
+jupyterlab-language-pack-ja-JP==3.6.post0
+numpy
+pandas
+matplotlib
+statsmodels
+scikit-learn

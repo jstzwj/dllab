@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  jupyterhub:
+    build: jupyterhub
+    image: deeplearning_jupyterhub_img
+    container_name: deeplearning_jupyterhub
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    volumes:
+      - ./jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${JUPYTERHUB_DATA_PATH}:/srv/jupyterhub:rw
+      - ${NOTEBOOK_DATA_PATH}:/srv/notebook_data:rw
+    networks:
+      - deeplearning
+      - jupyterhub-network
+    environment:
+      - JUPYTERHUB_ADMIN=admin
+      # - DOCKER_NOTEBOOK_IMAGE=jupyter/minimal-notebook:latest
+      - DOCKER_NETWORK_NAME=jupyterhub-network
+      - DOCKER_NOTEBOOK_IMAGE=deeplearning_jupyterlab_img:latest
+      - DOCKER_NOTEBOOK_DIR=/home/${INTERNAL_USERNAME}/work
+      - NOTEBOOK_DATA_PATH=${NOTEBOOK_DATA_PATH}
+      - BUNDLE_DATA_PATH=${BUNDLE_DATA_PATH}
+      - HUB_IP=deeplearning_jupyterhub
+      - HOST
+      - DOCKER_UID
+      - DOCKER_GID
+      - DOCKER_USERNAME
+      - INTERNAL_UID
+      - INTERNAL_GID
+      - INTERNAL_USERNAME
+    restart: on-failure
+    user: root
+    command: >
+      jupyterhub -f /srv/jupyterhub/jupyterhub_config.py
+    depends_on:
+      - jupyterlab
+  jupyterlab:
+    build:
+      context: jupyterlab
+      args:
+        - NB_USER=${INTERNAL_USERNAME}
+        - NB_UID=${INTERNAL_UID}
+        - NB_GID=${INTERNAL_GID}
+    image: deeplearning_jupyterlab_img
+    container_name: deeplearning_jupyterlab
+    network_mode: none
+    command: echo
+    user: "${DOCKER_UID}:${DOCKER_GID}"
+networks:
+  jupyterhub-network:
+    name: jupyterhub-network
+  deeplearning:
+    name: deeplearning
