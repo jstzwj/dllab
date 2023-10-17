@@ -6,15 +6,14 @@ services:
     image: deeplearning_jupyterhub_img
     container_name: deeplearning_jupyterhub
     ports:
-      - "8000:8000"
-      - "8001:8001"
+      - "8100:8000"
+      - "8101:8001"
     volumes:
-      - ./jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro
+      - ${PWD}/jupyterhub/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${JUPYTERHUB_DATA_PATH}:/srv/jupyterhub:rw
       - ${NOTEBOOK_DATA_PATH}:/srv/notebook_data:rw
     networks:
-      - deeplearning
       - jupyterhub-network
     environment:
       - JUPYTERHUB_ADMIN=admin
@@ -23,7 +22,6 @@ services:
       - DOCKER_NOTEBOOK_IMAGE=deeplearning_jupyterlab_img:latest
       - DOCKER_NOTEBOOK_DIR=/home/${INTERNAL_USERNAME}/work
       - NOTEBOOK_DATA_PATH=${NOTEBOOK_DATA_PATH}
-      - BUNDLE_DATA_PATH=${BUNDLE_DATA_PATH}
       - HUB_IP=deeplearning_jupyterhub
       - HOST
       - DOCKER_UID
@@ -53,5 +51,3 @@ services:
 networks:
   jupyterhub-network:
     name: jupyterhub-network
-  deeplearning:
-    name: deeplearning

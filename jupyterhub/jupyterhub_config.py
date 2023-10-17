@@ -814,7 +814,7 @@ c.DockerSpawner.network_name = network_name
 # see https://github.com/jupyterhub/dockerspawner#data-persistence-and-dockerspawner
 notebook_dir = os.environ.get('DOCKER_NOTEBOOK_DIR') or '/home/jovyan'
 notebook_data_path = os.environ.get('NOTEBOOK_DATA_PATH') or 'jupyterhub-user-{username}'
-bundle_data_path = os.environ.get('BUNDLE_DATA_PATH')
+# bundle_data_path = os.environ.get('BUNDLE_DATA_PATH')
 docker_gid = os.environ.get('DOCKER_GID')
 docker_uid = os.environ.get('DOCKER_UID')
 docker_uname = os.environ.get('DOCKER_USERNAME')
@@ -859,7 +859,7 @@ home_dir = "/home/" + internal_uname
 c.DockerSpawner.volumes = {
     # 'jupyterhub-user-{username}': notebook_dir,
     notebook_data_path + '/jupyterhub-user-{username}': {"bind": home_dir, "mode": "rw"},
-    bundle_data_path: {"bind": '/opt/data/jq/bundle', "mode": "ro"},
+    # bundle_data_path: {"bind": '/opt/data/jq/bundle', "mode": "ro"},
 }
 
 ## Path to SSL certificate file for the public facing interface of the proxy
