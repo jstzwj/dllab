@@ -830,6 +830,7 @@ c.DockerSpawner.environment = {
     "NB_USER": internal_uname,
     "NB_UID": internal_uid,
     "NB_GID": internal_gid,
+    "GRANT_SUDO": "yes",
     "CHOWN_HOME": "yes",
     "CHOWN_HOME_OPTS": "-R",
     "CHOWN_EXTRA": "/opt/conda"
